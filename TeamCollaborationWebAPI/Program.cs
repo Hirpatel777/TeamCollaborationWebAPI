@@ -72,7 +72,7 @@ builder.Services.AddAuthentication(opt =>
         OnMessageReceived = context =>
         {
             // Needed for SignalR JWT auth
-            var accessToken = configuration["access_token"];
+            var accessToken = context.Request.Query["access_token"]; //configuration["access_token"];
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/taskhub"))
             {
