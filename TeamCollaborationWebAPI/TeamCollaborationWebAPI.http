@@ -1,0 +1,6 @@
+@TeamCollaborationWebAPI_HostAddress = http://localhost:5136
+
+GET {{TeamCollaborationWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

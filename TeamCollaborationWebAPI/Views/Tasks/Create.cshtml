@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Task Dashboard";
+    var userToken = ViewBag.Token as string; // or use localStorage on client
+}
+
+<h2>Welcome to Task Dashboard</h2>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    const jwtToken = '@userToken'; // or get it from localStorage/sessionStorage
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/taskhub", {
+            accessTokenFactory: () => jwtToken
+        })
+        .withAutomaticReconnect()
+        .build();
+
+    connection.start()
+        .then(() => console.log("✅ Connected to TaskHub"))
+        .catch(err => console.error("❌ Connection error", err));
+
+    connection.on("ReceiveTask", function (task) {
+        console.log("📬 New Task Received", task);
+        alert(`New Task: ${task.title}`);
+        window.location.href = `/Tasks/Details/${task.id}`;
+    });
+</script>
